@@ -196,6 +196,9 @@ import Prelude hiding ( length, null,
                         showsPrec )
 
 import qualified Text.Read as Read
+#if MIN_VERSION_base(4,7,0)
+#define Typeable1 Typeable
+#endif
 import Data.Typeable ( Typeable1, gcast1 )
 
 #include "vector.h"
