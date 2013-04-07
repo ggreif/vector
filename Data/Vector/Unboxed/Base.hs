@@ -1,4 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses, TypeFamilies, FlexibleContexts #-}
+#if MIN_VERSION_base(4,7,0)
+{-# LANGUAGE StandaloneDeriving #-}
+#endif
 {-# OPTIONS_HADDOCK hide #-}
 
 -- |
@@ -31,7 +34,15 @@ import Data.Word ( Word, Word8, Word16, Word32, Word64 )
 import Data.Int  ( Int8, Int16, Int32, Int64 )
 import Data.Complex
 
-import Data.Typeable ( Typeable1(..), Typeable2(..), mkTyConApp,
+import Data.Typeable (
+#if MIN_VERSION_base(4,7,0)
+                       Typeable,
+#define Typeable1 Typeable
+#define	Typeable2 Typeable
+#else
+                       Typeable1(..), Typeable2(..),
+#endif
+                       mkTyConApp,
 #if MIN_VERSION_base(4,4,0)
                        mkTyCon3
 #else
@@ -65,11 +76,16 @@ vectorTyCon = mkTyCon3 "vector"
 vectorTyCon m s = mkTyCon $ m ++ "." ++ s
 #endif
 
+#if MIN_VERSION_base(4,4,0)
+deriving instance Typeable Vector
+deriving instance Typeable MVector
+#else
 instance Typeable1 Vector where
   typeOf1 _ = mkTyConApp (vectorTyCon "Data.Vector.Unboxed" "Vector") []
 
 instance Typeable2 MVector where
   typeOf2 _ = mkTyConApp (vectorTyCon "Data.Vector.Unboxed.Mutable" "MVector") []
+#endif
 
 instance (Data a, Unbox a) => Data (Vector a) where
   gfoldl       = G.gfoldl
