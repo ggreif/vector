@@ -76,7 +76,7 @@ vectorTyCon = mkTyCon3 "vector"
 vectorTyCon m s = mkTyCon $ m ++ "." ++ s
 #endif
 
-#if MIN_VERSION_base(4,4,0)
+#if MIN_VERSION_base(4,7,0)
 deriving instance Typeable Vector
 deriving instance Typeable MVector
 #else
