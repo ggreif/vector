@@ -36,7 +36,7 @@ import Data.Complex
 
 import Data.Typeable (
 #if MIN_VERSION_base(4,7,0)
-                       Typeable,
+                       Typeable(..),
 #define Typeable1 Typeable
 #define	Typeable2 Typeable
 #else
